@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-websocket
+  namespace: ns-workshop-public
+  #annotations:
+   #  nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  defaultBackend:
+    service:
+      name: svc-websocket
+      port:
+        number: 3001
+  rules:
+  - host: websocket.192.168.64.2.nip.io #websocket.everba1e.kubelabs.tk # nombre del host ó dominio
+    http:
+      paths:
+      - path: /graphql # por ejemplo /home se vería así en la página: http://mipagina.com/home
+        pathType: Prefix
+        backend:
+          service:
+            name: svc-websocket # nombre del service y el puerto donde escucha
+            port:
+              number: 3001

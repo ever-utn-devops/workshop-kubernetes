@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deploy
+  namespace: voting-app
+  labels:
+    name: postgres-deploy
+    app: demo-voting-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: postgres-pod
+      app: demo-voting-app
+  template:
+    metadata:
+      name: postgres-pod
+      labels:
+        name: postgres-pod
+        app: demo-voting-app
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:14
+        ports:
+        - containerPort: 5432
+        # indicamos el puerto que se debe abrir en el contenedor para el almacenamiento de los datos
+        resources:
+        # indicamos los recursos que va a requerir el pod
+            requests: # Valores requeridos de recursos
+              cpu: 100m # Décima parte de core/vCPU
+              memory: 100M # 100 Megabytes
+            limits: # Valores máximos de recursos que se pueden usar
+              cpu: 250m # Un cuarto de core/vCPU
+              memory: 500M # 500 Megabytes
+        volumeMounts: # Donde se almacenan los datos dentro del contenedor
+          - name: static-vol
+            mountPath: /var/lib/postgresql/data
+        envFrom: # Se obtienen las variables de entorno del ConfigMap
+            - configMapRef:
+                name: postgres-config-map
+      volumes:
+        - name: static-vol
+          hostPath: # Donde se almacenan los datos en el host
+            path: /tmp/mcmp

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webapp-conf
+  namespace: ns-workshop-public
+data:
+  webappconf: | # | = multilinea
+    var config = (() => {
+      return {
+        API: "http://api.192.168.64.2.nip.io/graphql",
+        WEBSOCKET: "ws://websocket.192.168.64.2.nip.io/graphql",
+      };
+    })();
+
+  #webappconf: | # | = multilinea
+  #  var config = (() => {
+  #    return {
+  #      API: "http://api.everba1e.kubelabs.tk/graphql",
+  #      WEBSOCKET: "ws://websocket.everba1e.kubelabs.tk/graphql",
+  #    };
+  #  })();

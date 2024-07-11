@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: private-api-conf
+  namespace: ns-workshop-public
+data:
+  PRIVATE_API: http://svc-private-api.ns-workshop-private.svc.cluster.local:3002/private

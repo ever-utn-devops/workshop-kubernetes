@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voting-app-deploy
+  namespace: voting-app
+  labels:
+    name: voting-app-deploy
+    app: demo-voting-app
+spec:
+  replicas: 3 # se indica la cantidad de pods que se van a crear
+  selector:
+    matchLabels: # deben coincidir con los labels en la estructura de los pods
+      name: voting-app-pod
+      app: demo-voting-app
+  template: # se define la estructura de los pods en el deploy
+    metadata:
+      name: voting-app-pod
+      labels:
+        name: voting-app-pod
+        app: demo-voting-app
+    spec:
+      containers:
+        - name: voting-app
+          image: kodekloud/examplevotingapp_vote:v1
+          ports:
+            - containerPort: 80

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  namespace: voting-app
+  labels:
+    name: postgres-service
+    app: demo-voting-app
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432 # Conectamos el puerto 5432 del pod con el 5432 del contenedor
+      targetPort: 5432
+  selector:
+    name: postgres-pod
+    app: demo-voting-app

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webuserlab-deployment
+  namespace: ns-workshop-public
+  labels:
+    app: webpage
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: webpage
+  template:
+    metadata:
+      name: webpage
+      labels:
+        app: webpage
+    spec:
+      containers:
+        - name: webpage
+          image: cachac/kubelabs_webapp:1.1.7
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: webapp-conf
+              mountPath: /usr/share/nginx/html/config.js
+              readOnly: true
+              subPath: config.js
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
+            requests:
+              cpu: 10m
+              memory: 50Mi
+      volumes:
+        - name: webapp-conf
+          configMap:
+            name: webapp-conf
+            items: # convierte las entradas CM-data en archivos dentro del volumen.
+              - key: webappconf
+                path: config.js

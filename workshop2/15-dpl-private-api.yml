@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: private-api-deployment
+  namespace: ns-workshop-private
+  labels:
+    app: private-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: private-api
+  template:
+    metadata:
+      name: private-api
+      labels:
+        app: private-api
+    spec:
+      containers:
+        - name: private-api
+          image: cachac/kubelabs_privateapi:1.0.2
+          ports:
+            - containerPort: 3002
+              name: private-api
+            - containerPort: 3082
+              name: healthcheck
+          
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 3082
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
+
+          resources:
+            limits:
+              cpu: 200m
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi

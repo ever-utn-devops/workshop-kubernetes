@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod # Declaramos el tipo de componente
+metadata:
+  name: voting-app-pod # Se agrega el nombre que tendrá el Pod
+  labels: # Se definen los labels que serán utilizados por los services
+    name: voting-app-pod 
+    app: demo-voting-app
+spec:
+  containers:
+    - name: voting-app
+      image: kodekloud/examplevotingapp_vote:v1 # Se descarga la imagen desde Docker Hub
+      ports:
+        - containerPort: 80

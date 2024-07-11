@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: websocket-deployment
+  namespace: ns-workshop-public
+  labels:
+    app: websocket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: websocket
+  template:
+    metadata:
+      name: websocket
+      labels:
+        app: websocket
+    spec:
+      containers:
+        - name: websocket
+          image: cachac/kubelabs_websocket:1.0.6
+          ports:
+            - containerPort: 3001
+              name: websocket
+            - containerPort: 3081
+              name: healthcheck
+
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 3081
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
+
+          envFrom:
+            - secretRef:
+                name: secret-token
+          resources:
+            limits:
+              cpu: 250m
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi

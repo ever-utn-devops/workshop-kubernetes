@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-public-api
+  namespace: ns-workshop-public
+  #annotations:
+   #  nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: api.192.168.64.2.nip.io #api.everba1e.kubelabs.tk # nombre del host ó dominio
+    http:
+      paths:
+      - path: /graphql # por ejemplo /home se vería así en la página: http://mipagina.com/home
+        pathType: Prefix
+        backend:
+          service:
+            name: svc-public-api # nombre del service y el puerto donde escucha
+            port:
+              number: 3000
