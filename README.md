@@ -4,7 +4,7 @@
 &#xa0;
 
 </div>
-<h1 align="center">Kubernetes Workshop</h1>
+<h1 align="center">Kubernetes - Voting App Workshop</h1>
 
 ## 🎯 Introducción
 
